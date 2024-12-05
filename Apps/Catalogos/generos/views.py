@@ -88,7 +88,6 @@ class GeneroApiView(APIView):
                     status=status.HTTP_404_NOT_FOUND
                 )
 
-            # Serializar y validar los datos parciales
             serializer = GeneroSerializer(genero, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
