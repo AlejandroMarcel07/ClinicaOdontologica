@@ -1,6 +1,5 @@
 #IMPORTACIONES 1
 from http.client import responses
-
 from django.db import DatabaseError
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
