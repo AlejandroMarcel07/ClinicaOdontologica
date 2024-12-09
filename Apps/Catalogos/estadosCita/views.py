@@ -98,5 +98,30 @@ class EstadoCitaApiView(APIView):
                 {"error": "Error interno del servidor. Por favor intentelo de nuevo mas tarde."},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+    def delete(self, request, id=None):
+        try:
+            try:
+                estadoCita = EstadoCitaModel.objects.get(id=id)
+            except EstadoCitaModel.DoesNotExist:
+                logger.warning(f"El Estado de cita con id {id} no existe.")
+                return  Response(
+                    {"error": f"El Estado de cita con id {id} no existe."},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            self.check_object_permissions(request, estadoCita)
+
+            estadoCita.delete()
+            logger.info(f"El usuario '{request.user}' elimino el Estado de cita con id: {id}")
+            return  Response(
+                {"message": f"El Estado de cita con Id {id} eliminado exitosamente."},
+                status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            logger.error(f"Error interno del servidor al intentar eliminar el genero con id {id}: {str(e)}"),
+            return Response(
+                {"error": "Error interno del servidor. Por favor intentelo de nuevo más tarde."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
 
 
