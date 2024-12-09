@@ -8,6 +8,8 @@ from rest_framework.response import Response
 from rest_framework import status
 import logging
 
+from yaml import serialize
+
 # Configura el logger
 logger = logging.getLogger(__name__)
 
@@ -46,4 +48,29 @@ class EstadoCitaApiView(APIView):
             return Response ({"error": "Hubo un problema al recuperar los datos."},
                              status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
+
+    def post(self, request):
+        try:
+            data = request.data
+            serializer = EstadoCitaSerializer(data=data)
+            if serializer.is_valid():
+                estadoCita = serializer.save()
+                logger.info(f"El usuario '{request.user}' creó un nuevo estado de cita con id: '{estadoCita.id}'")
+                return Response(
+                    {"message": "Estado de cita creado exitosamente.", "data": serializer.data},
+                    status=status.HTTP_201_CREATED
+                )
+            else:
+                logger.warning(f"Errores de validación en la solicitud de {request.user}: {serializer.errors}")
+                return Response(
+                    {"errors": serializer.errors},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        except Exception as e:
+            logger.error(f"Error interno del servidor: {str(e)}")
+            return Response(
+                {"error": "Error interno del servidor. Por favor intentelo de nuevo más tarde."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
