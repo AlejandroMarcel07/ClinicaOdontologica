@@ -74,3 +74,29 @@ class EstadoCitaApiView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
+    def patch(self, request, id=None):
+        try:
+            try:
+                estadoCita = EstadoCitaModel.objects.get(id=id)
+            except EstadoCitaModel.DoesNotExist:
+                logger.warning(f"El Estado cita con id {id} no existe.")
+                return  Response(
+                    {"error": f"El Estado cita con id {id} no existe"},
+                    status = status.HTTP_404_NOT_FOUND
+                )
+            serializer = EstadoCitaSerializer(estadoCita, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                logger.info(f"El usuario '{request.data}' actualizo el Estado de cita con id {id}")
+                return Response(
+                    {"errors": serializer.errors},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        except Exception as e:
+            logger.error(f"Error interno del servidor al actualizar el Estado de cita con id {id}: {str(e)}")
+            return  Response(
+                {"error": "Error interno del servidor. Por favor intentelo de nuevo mas tarde."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
