@@ -48,8 +48,6 @@ class EstadoCitaApiView(APIView):
             return Response ({"error": "Hubo un problema al recuperar los datos."},
                              status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
-
     def post(self, request):
         try:
             data = request.data
@@ -98,6 +96,7 @@ class EstadoCitaApiView(APIView):
                 {"error": "Error interno del servidor. Por favor intentelo de nuevo mas tarde."},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
     def delete(self, request, id=None):
         try:
             try:
@@ -108,9 +107,10 @@ class EstadoCitaApiView(APIView):
                     {"error": f"El Estado de cita con id {id} no existe."},
                     status=status.HTTP_404_NOT_FOUND
                 )
+            #Permiso de objeto
             self.check_object_permissions(request, estadoCita)
-
             estadoCita.delete()
+
             logger.info(f"El usuario '{request.user}' elimino el Estado de cita con id: {id}")
             return  Response(
                 {"message": f"El Estado de cita con Id {id} eliminado exitosamente."},
