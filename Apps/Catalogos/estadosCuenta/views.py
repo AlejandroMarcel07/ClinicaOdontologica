@@ -8,8 +8,6 @@ from rest_framework.response import Response
 from rest_framework import status
 import logging
 
-from yaml import serialize
-
 # Configura el logger
 logger = logging.getLogger(__name__)
 
