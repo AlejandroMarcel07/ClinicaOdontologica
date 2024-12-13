@@ -1,9 +1,10 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 
+
 def validar_nombre(value):
-    if not value.isalpha():
-        raise ValidationError('El nombre debe contener solo letras.')
+    if not all(char.isalpha() or char.isspace() for char in value):
+        raise ValidationError('El nombre no debe contener simbolos ni numeros.')
 
 class TipoPagoModel(models.Model):
     id = models.AutoField(primary_key=True)

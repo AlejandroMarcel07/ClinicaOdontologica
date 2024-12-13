@@ -48,6 +48,9 @@ class EstadoCitaApiView(APIView):
             return Response ({"error": "Hubo un problema al recuperar los datos."},
                              status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    @swagger_auto_schema(
+        request_body=EstadoCitaSerializer, responses={201: EstadoCitaSerializer}
+    )
     def post(self, request):
         try:
             data = request.data
@@ -72,6 +75,9 @@ class EstadoCitaApiView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
+    @swagger_auto_schema(
+        request_body=EstadoCitaSerializer, responses={200: EstadoCitaSerializer}
+    )
     def patch(self, request, id=None):
         try:
             try:
@@ -97,6 +103,7 @@ class EstadoCitaApiView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
+    @swagger_auto_schema(responses={204: 'No Content'})
     def delete(self, request, id=None):
         try:
             try:

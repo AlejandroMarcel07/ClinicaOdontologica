@@ -51,6 +51,9 @@ class GeneroApiView(APIView):
                              status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+    @swagger_auto_schema(
+        request_body=GeneroSerializer, responses={201: GeneroSerializer}
+    )
     def post(self, request):
         try:
             data = request.data
@@ -76,6 +79,9 @@ class GeneroApiView(APIView):
             )
 
 
+    @swagger_auto_schema(
+        request_body=GeneroSerializer, responses={200: GeneroSerializer}
+    )
     def patch(self, request, id=None):
         try:
             try:
@@ -108,7 +114,7 @@ class GeneroApiView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-
+    @swagger_auto_schema(responses={204: 'No Content'})
     def delete(self, request, id=None):
         try:
             try:
