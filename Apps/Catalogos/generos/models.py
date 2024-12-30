@@ -7,7 +7,7 @@ def validar_nombre(value):
 
 class GeneroModel(models.Model):
     id = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=20, null=False, blank=False, unique=True, validators=[validar_nombre])
+    nombre = models.CharField(max_length=10, null=True, blank=False, unique=True, validators=[validar_nombre])
 
     def save(self, *args, **kwargs):
         if self.nombre:
