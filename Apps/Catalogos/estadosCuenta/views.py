@@ -73,7 +73,7 @@ class EstadoCuentaApiView(APIView):
             )
 
     @swagger_auto_schema(
-        request_body=EstadoCuentaModel, responses={200: EstadoCuentaModel}
+        request_body=EstadoCuentaSerializer, responses={200: EstadoCuentaSerializer}
     )
     def patch(self, request, id=None):
         try:
