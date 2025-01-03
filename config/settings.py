@@ -19,6 +19,7 @@ from django.conf.global_settings import AUTH_USER_MODEL
 
 from Apps.Catalogos.setting_apps import CATALOGOS_SETTING_APPS
 from Apps.Seguridad.setting_apps import SEGURIDAD_SETTING_APPS
+from Apps.Movimientos.setting_apps import MOVIMIENTOS_SETTING_APPS
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -48,7 +49,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework',
     'rest_framework_simplejwt',
-] + SEGURIDAD_SETTING_APPS + CATALOGOS_SETTING_APPS
+] + SEGURIDAD_SETTING_APPS + CATALOGOS_SETTING_APPS + MOVIMIENTOS_SETTING_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
