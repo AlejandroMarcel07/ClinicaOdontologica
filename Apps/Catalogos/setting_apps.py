@@ -4,4 +4,5 @@ CATALOGOS_SETTING_APPS = [
     'Apps.Catalogos.estadosCuenta',
     'Apps.Catalogos.tiposPago',
     'Apps.Catalogos.frecuencias',
+    'Apps.Catalogos.periocidades',
 ]
