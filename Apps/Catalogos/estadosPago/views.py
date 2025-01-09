@@ -45,6 +45,6 @@ class EstadoPagoApiView(APIView):
             return Response(status=status.HTTP_200_OK, data=serializer.data)
 
         except DatabaseError as e:
-            logger.error(f"Error al recuperar los generos: {e}")
+            logger.error(f"Error al recuperar los estadosPago: {e}")
             return Response ({"error": "Hubo un problema al recuperar los datos."},
                              status=status.HTTP_500_INTERNAL_SERVER_ERROR)
