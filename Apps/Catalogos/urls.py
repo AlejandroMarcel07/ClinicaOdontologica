@@ -10,4 +10,5 @@ urlpatterns = [
     path('tratamiento/', include('Apps.Catalogos.tratamientos.urls')),
     path('exploracion/', include('Apps.Catalogos.exploraciones.urls')),
     path('estadoFecha/', include('Apps.Catalogos.estadosFecha.urls')),
+    path('estadoPago/', include('Apps.Catalogos.estadosPago.urls')),
 ]
