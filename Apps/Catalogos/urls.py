@@ -11,4 +11,5 @@ urlpatterns = [
     path('exploracion/', include('Apps.Catalogos.exploraciones.urls')),
     path('estadoFecha/', include('Apps.Catalogos.estadosFecha.urls')),
     path('estadoPago/', include('Apps.Catalogos.estadosPago.urls')),
+    path('modalidadPago/', include('Apps.Catalogos.modalidadesPago.urls')),
 ]

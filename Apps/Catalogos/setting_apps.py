@@ -9,4 +9,6 @@ CATALOGOS_SETTING_APPS = [
     'Apps.Catalogos.exploraciones',
     'Apps.Catalogos.estadosFecha',
     'Apps.Catalogos.estadosPago',
+    'Apps.Catalogos.modalidadesPago',
+
 ]
