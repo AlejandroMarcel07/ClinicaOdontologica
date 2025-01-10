@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             name='MontoDescuentoModel',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('cantidad', models.DecimalField(decimal_places=2, max_digits=5, null=True, unique=True, validators=[Apps.Catalogos.montosDescuento.models.validar_descuento])),
+                ('cantidad', models.DecimalField(decimal_places=2, max_digits=5, null=True, unique=True)),
             ],
             options={
                 'verbose_name': 'MontoDescuento',
