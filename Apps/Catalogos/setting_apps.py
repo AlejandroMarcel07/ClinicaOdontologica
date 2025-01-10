@@ -10,5 +10,6 @@ CATALOGOS_SETTING_APPS = [
     'Apps.Catalogos.estadosFecha',
     'Apps.Catalogos.estadosPago',
     'Apps.Catalogos.modalidadesPago',
+    'Apps.Catalogos.montosDescuento',
 
 ]
