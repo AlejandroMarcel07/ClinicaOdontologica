@@ -1,8 +1,9 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 class MontoDescuentoModel(models.Model):
     id = models.AutoField(primary_key=True)
-    cantidad = models.DecimalField(max_digits=5, decimal_places=2, null=False, blank=False, unique=True)
+    cantidad = models.DecimalField(max_digits=5, decimal_places=2, null=False, blank=False, unique=True, validators=[MaxValueValidator(100), MinValueValidator(0)])
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
