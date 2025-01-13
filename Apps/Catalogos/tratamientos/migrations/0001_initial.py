@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             name='TratamientoModel',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('nombre', models.CharField(max_length=60, null=True, unique=True, validators=[Apps.Catalogos.tratamientos.models.validar_nombre])),
+                ('nombre', models.CharField(max_length=60, null=True, unique=True)),
             ],
             options={
                 'verbose_name': 'Tratamiento',

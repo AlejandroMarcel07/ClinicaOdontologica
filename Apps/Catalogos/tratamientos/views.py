@@ -32,7 +32,7 @@ class TratamientoApiView(APIView):
 
             #Validar
             if tratamiento_id and not tratamiento_id.isdigit():
-                raise  ValidationError({"id": "El parametro 'id' debe de ser un numero"})
+                raise  ValidationError({"error": "El parametro 'id' debe de ser un numero"})
 
             #Filtrar por parametros
             if tratamiento_id:
@@ -48,3 +48,40 @@ class TratamientoApiView(APIView):
             logger.error(f"Error al recuperar los tratamientos: {e}")
             return Response ({"error": "Hubo un problema al recuperar los datos."},
                              status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @swagger_auto_schema(
+        request_body=TratamientoSerializer, responses={201: TratamientoSerializer}
+    )
+    def post(self, request):
+        try:
+            data = request.data
+            serializer = TratamientoSerializer(data=data)
+
+            if serializer.is_valid():
+                tratamiento = serializer.save()
+                logger.info(
+                    f"El usuario '{request.user}' creó un nuevo tratamiento con id: '{tratamiento.id}'"
+                )
+                return Response(
+                    {
+                        "message": "Tratamiento creado exitosamente.",
+                        "data": serializer.data,
+                    },
+                    status=status.HTTP_201_CREATED,
+                )
+            else:
+                logger.warning(f"Errores de validación: {serializer.errors}")
+                return Response(
+                    {"errors": serializer.errors},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+        except Exception as e:
+            # Registra errores en el servidor
+            logger.error(f"Error interno del servidor: {str(e)}")
+            return Response(
+                {
+                    "error": "Error interno del servidor. Por favor, inténtelo de nuevo más tarde."
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
