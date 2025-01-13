@@ -82,8 +82,12 @@ class MontoDescuentoApiView(APIView):
             except MontoDescuentoModel.DoesNotExist:
                 logger.warning(f"El monto de descuento con id {id} no existe.")
                 return  Response(
-                    {"error": f"El Estado cita con id {id} no existe"},
-                    status = status.HTTP_404_NOT_FOUND
+                    {"error": {
+                        'Id':{
+                            f"El Monto de descuento con id {id} no existe."
+                        }
+                    }},
+                    status=status.HTTP_404_NOT_FOUND
                 )
             serializer = MontoDescuentoSerializer(montodescuento, data=request.data, partial=True)
             if serializer.is_valid():
@@ -106,5 +110,36 @@ class MontoDescuentoApiView(APIView):
             logger.error(f"Error interno del servidor al actualizar el monto de descuento con id {id}: {str(e)}")
             return  Response(
                 {"error": "Error interno del servidor. Por favor intentelo de nuevo mas tarde."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+    @swagger_auto_schema(responses={204: 'No Content'})
+    def delete(self, request, id=None):
+        try:
+            try:
+                montodescuento = MontoDescuentoModel.objects.get(id=id)
+            except MontoDescuentoModel.DoesNotExist:
+                logger.warning(f"El Monto de descuento con id {id} no existe.")
+                return  Response(
+                    {"error": {
+                        'Id':{
+                            f"El Monto de descuento con id {id} no existe."
+                        }
+                    }},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            self.check_object_permissions(request, montodescuento)
+            montodescuento.delete()
+
+            logger.info(f"El usuario '{request.user}' elimino el Monto de descuento con id: {id}")
+            return Response(
+                {"message": f"El Monto de descuento con Id {id} eliminado exitosamente."},
+                status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            logger.error(f"Error interno del servidor al intentar eliminar el Monto de descuento con id {id}: {str(e)}"),
+            return Response(
+                {"error": "Error interno del servidor. Por favor intentelo de nuevo más tarde."},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )

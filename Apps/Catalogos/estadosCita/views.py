@@ -85,8 +85,12 @@ class EstadoCitaApiView(APIView):
             except EstadoCitaModel.DoesNotExist:
                 logger.warning(f"El Estado cita con id {id} no existe.")
                 return  Response(
-                    {"error": f"El Estado cita con id {id} no existe"},
-                    status = status.HTTP_404_NOT_FOUND
+                    {"error": {
+                        'Id':{
+                            f"El Estado de cita con id {id} no existe."
+                        }
+                    }},
+                    status=status.HTTP_404_NOT_FOUND
                 )
             serializer = EstadoCitaSerializer(estadoCita, data=request.data, partial=True)
             if serializer.is_valid():
@@ -111,7 +115,11 @@ class EstadoCitaApiView(APIView):
             except EstadoCitaModel.DoesNotExist:
                 logger.warning(f"El Estado de cita con id {id} no existe.")
                 return  Response(
-                    {"error": f"El Estado de cita con id {id} no existe."},
+                    {"error": {
+                        'Id':{
+                            f"El Estado de cita con id {id} no existe."
+                        }
+                    }},
                     status=status.HTTP_404_NOT_FOUND
                 )
             #Permiso de objeto
