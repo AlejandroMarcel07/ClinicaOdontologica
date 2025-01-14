@@ -31,7 +31,7 @@ class MontoDescuentoApiView(APIView):
             return Response(status=status.HTTP_200_OK, data=serializer.data)
 
         except DatabaseError as e:
-            logger.error(f"Error al recuperar los montos de descuento: {e}")
+            logger.error(f"Error al recuperar los montos de descuento: {e}, usuario: {request.user}")
             return Response ({"error": "Hubo un problema al recuperar los datos."},
                              status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -56,7 +56,7 @@ class MontoDescuentoApiView(APIView):
                     status=status.HTTP_201_CREATED,
                 )
             else:
-                logger.warning(f"Errores de validación: {serializer.errors}")
+                logger.warning(f"Errores de validación: {serializer.errors}, usuario: {request.user}")
                 return Response(
                     {"errors": serializer.errors},
                     status=status.HTTP_400_BAD_REQUEST,
@@ -64,7 +64,7 @@ class MontoDescuentoApiView(APIView):
 
         except Exception as e:
             # Registra errores en el servidor
-            logger.error(f"Error interno del servidor: {str(e)}")
+            logger.error(f"Error interno del servidor: {str(e)}, usuario: {request.user}")
             return Response(
                 {
                     "error": "Error interno del servidor. Por favor, inténtelo de nuevo más tarde."
@@ -80,7 +80,7 @@ class MontoDescuentoApiView(APIView):
             try:
                 montodescuento = MontoDescuentoModel.objects.get(id=id)
             except MontoDescuentoModel.DoesNotExist:
-                logger.warning(f"El monto de descuento con id {id} no existe.")
+                logger.warning(f"El monto de descuento con id {id} no existe, usuario: {request.user}")
                 return  Response(
                     {"error": {
                         'Id':{
@@ -92,7 +92,7 @@ class MontoDescuentoApiView(APIView):
             serializer = MontoDescuentoSerializer(montodescuento, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
-                logger.info(f"El usuario '{request.data}' actualizo el monto de descuento con id {id}")
+                logger.info(f"El usuario '{request.user}' actualizo el monto de descuento con id {id}")
                 return Response(
                     {
                         "message": "Monto de descuento actualizado exitosamente.",
@@ -101,13 +101,13 @@ class MontoDescuentoApiView(APIView):
                     status=status.HTTP_200_OK,
                 )
             else:
-                logger.warning(f"Errores de validación: {serializer.errors}")
+                logger.warning(f"Errores de validación: {serializer.errors}, usuario: {request.user}")
                 return Response(
                     {"errors": serializer.errors},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
         except Exception as e:
-            logger.error(f"Error interno del servidor al actualizar el monto de descuento con id {id}: {str(e)}")
+            logger.error(f"Error interno del servidor al actualizar el monto de descuento con id {id}: {str(e)}, usuario: {request.user}")
             return  Response(
                 {"error": "Error interno del servidor. Por favor intentelo de nuevo mas tarde."},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -119,7 +119,7 @@ class MontoDescuentoApiView(APIView):
             try:
                 montodescuento = MontoDescuentoModel.objects.get(id=id)
             except MontoDescuentoModel.DoesNotExist:
-                logger.warning(f"El Monto de descuento con id {id} no existe.")
+                logger.warning(f"El Monto de descuento con id {id} no existe, usuario: {request.user}")
                 return  Response(
                     {"error": {
                         'Id':{
@@ -138,7 +138,7 @@ class MontoDescuentoApiView(APIView):
                 status=status.HTTP_200_OK
             )
         except Exception as e:
-            logger.error(f"Error interno del servidor al intentar eliminar el Monto de descuento con id {id}: {str(e)}"),
+            logger.error(f"Error interno del servidor al intentar eliminar el Monto de descuento con id {id}: {str(e)}, usuario: {request.user}"),
             return Response(
                 {"error": "Error interno del servidor. Por favor intentelo de nuevo más tarde."},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR

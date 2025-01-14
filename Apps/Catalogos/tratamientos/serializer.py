@@ -8,7 +8,8 @@ def validate_name(value):
 
 def validate_uniquename(value):
     if TratamientoModel.objects.filter(nombre__iexact=value).exists():
-        raise serializers.ValidationError("¡Este nombre ya existe!.")
+        raise serializers.ValidationError("¡Este tratamiento ya existe!.")
+    return value
 
 class TratamientoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,7 +18,7 @@ class TratamientoSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'nombre': {
                 'error_messages':{
-                    'invalid':'¡Ingresa una cantidad valida!',
+                    'invalid':'¡Ingresa un tratamiento valido!',
                     'blank':'¡El campo no puede estar vacio!',
                     'max_length':'¡Superaste la cantidad de caracteres!'
                 },

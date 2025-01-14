@@ -45,7 +45,7 @@ class TratamientoApiView(APIView):
             return Response(status=status.HTTP_200_OK, data=serializer.data)
 
         except DatabaseError as e:
-            logger.error(f"Error al recuperar los tratamientos: {e}")
+            logger.error(f"Error al recuperar los tratamientos: {e}, usuario: {request.user}")
             return Response ({"error": "Hubo un problema al recuperar los datos."},
                              status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -70,7 +70,7 @@ class TratamientoApiView(APIView):
                     status=status.HTTP_201_CREATED,
                 )
             else:
-                logger.warning(f"Errores de validación: {serializer.errors}")
+                logger.warning(f"Errores de validación: {serializer.errors}, usuario: {request.user}")
                 return Response(
                     {"errors": serializer.errors},
                     status=status.HTTP_400_BAD_REQUEST,
@@ -78,7 +78,7 @@ class TratamientoApiView(APIView):
 
         except Exception as e:
             # Registra errores en el servidor
-            logger.error(f"Error interno del servidor: {str(e)}")
+            logger.error(f"Error interno del servidor: {str(e)}, usuario: {request.user}")
             return Response(
                 {
                     "error": "Error interno del servidor. Por favor, inténtelo de nuevo más tarde."
@@ -94,7 +94,7 @@ class TratamientoApiView(APIView):
             try:
                 tratamiento = TratamientoModel.objects.get(id=id)
             except TratamientoModel.DoesNotExist:
-                logger.warning(f"El Tratamiento con id {id} no existe.")
+                logger.warning(f"El Tratamiento con id {id} no existe, usuario: {request.user}")
                 return  Response(
                     {"error": {
                         'Id':{
@@ -106,7 +106,7 @@ class TratamientoApiView(APIView):
             serializer = TratamientoSerializer(tratamiento, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
-                logger.info(f"El usuario '{request.data}' actualizo el Tratamiento con id {id}")
+                logger.info(f"El usuario '{request.user}' actualizo el Tratamiento con id {id}")
                 return Response(
                     {
                         "message": "Tratamiento actualizado exitosamente.",
@@ -115,13 +115,13 @@ class TratamientoApiView(APIView):
                     status=status.HTTP_200_OK,
                 )
             else:
-                logger.warning(f"Errores de validación: {serializer.errors}")
+                logger.warning(f"Errores de validación: {serializer.errors}, usuario: {request.user}")
                 return Response(
                     {"errors": serializer.errors},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
         except Exception as e:
-            logger.error(f"Error interno del servidor al actualizar el tratamiento con id {id}: {str(e)}")
+            logger.error(f"Error interno del servidor al actualizar el tratamiento con id {id}: {str(e)}, usuario: {request.user}")
             return  Response(
                 {"error": "Error interno del servidor. Por favor intentelo de nuevo mas tarde."},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -133,7 +133,7 @@ class TratamientoApiView(APIView):
             try:
                 tratamiento = TratamientoModel.objects.get(id=id)
             except TratamientoModel.DoesNotExist:
-                logger.warning(f"El Tratamiento con id {id} no existe.")
+                logger.warning(f"El Tratamiento con id {id} no existe, usuario: {request.user}")
                 return  Response(
                     {"error": {
                         'Id':{
@@ -152,7 +152,7 @@ class TratamientoApiView(APIView):
                 status=status.HTTP_200_OK
             )
         except Exception as e:
-            logger.error(f"Error interno del servidor al intentar eliminar el Tratamiento con id {id}: {str(e)}"),
+            logger.error(f"Error interno del servidor al intentar eliminar el Tratamiento con id {id}: {str(e)}, usuario: {request.user}"),
             return Response(
                 {"error": "Error interno del servidor. Por favor intentelo de nuevo más tarde."},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
