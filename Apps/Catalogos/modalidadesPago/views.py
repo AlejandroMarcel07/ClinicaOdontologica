@@ -24,21 +24,27 @@ class ModalidadPagoApiView(APIView):
     )
     def get(self, request):
         try:
-            modalidades = ModalidadPagoModel.objects.all()
+            modelos = ModalidadPagoModel.objects.all()
 
             #Verificar que haigan parametros para filtrar
+            modelos_id = request.query_params.get('id', None)
             nombre = request.query_params.get('nombre', None)
 
+            #Validar
+            if modelos_id and not modelos_id.isdigit():
+                raise  ValidationError({"error": "El parametro 'id' debe de ser un numero"})
 
             #Filtrar por parametros
+            if modelos_id:
+                modelos = modelos.filter(id=modelos_id)
             if nombre:
-                modalidades = modalidades.filter(nombre__icontains=nombre)
+                modelos = modelos.filter(nombre__icontains=nombre)
 
-            serializer = ModalidadPagoSerializer(modalidades, many=True)
-            logger.info(f"El usuario '{request.user}' recuperó {modalidades.count()} modalidades de pago.")
+            serializer = ModalidadPagoSerializer(modelos, many=True)
+            logger.info(f"El usuario '{request.user}' recuperó {modelos.count()} modalidades.")
             return Response(status=status.HTTP_200_OK, data=serializer.data)
 
         except DatabaseError as e:
-            logger.error(f"Error al recuperar las modalidades: {e}")
+            logger.error(f"Error al recuperar las modalidades: {e}, usuario: {request.user}")
             return Response ({"error": "Hubo un problema al recuperar los datos."},
                              status=status.HTTP_500_INTERNAL_SERVER_ERROR)

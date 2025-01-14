@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             name='EstadoCitaModel',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('nombre', models.CharField(max_length=20, unique=True, validators=[Apps.Catalogos.estadosCita.models.validar_nombre])),
+                ('nombre', models.CharField(max_length=20, unique=True)),
             ],
             options={
                 'verbose_name': 'Estado',

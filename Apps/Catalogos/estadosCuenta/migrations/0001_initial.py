@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             name='EstadoCuentaModel',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('nombre', models.CharField(max_length=25, unique=True, validators=[Apps.Catalogos.estadosCuenta.models.validar_nombre])),
+                ('nombre', models.CharField(max_length=25, unique=True)),
             ],
             options={
                 'verbose_name': 'Estado',

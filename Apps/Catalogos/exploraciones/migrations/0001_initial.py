@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             name='ExploracionModel',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('nombre', models.CharField(max_length=50, null=True, unique=True, validators=[Apps.Catalogos.exploraciones.models.validar_nombre])),
+                ('nombre', models.CharField(max_length=50, null=True, unique=True)),
             ],
             options={
                 'verbose_name': 'Exploracion',

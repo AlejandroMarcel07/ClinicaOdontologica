@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='estadocuentamodel',
             name='nombre',
-            field=models.CharField(max_length=25, null=True, unique=True, validators=[Apps.Catalogos.estadosCuenta.models.validar_nombre]),
+            field=models.CharField(max_length=25, null=True, unique=True),
         ),
     ]

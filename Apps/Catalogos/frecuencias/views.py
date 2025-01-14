@@ -32,7 +32,7 @@ class FrecuenciaApiView(APIView):
 
             #Validar
             if frecuencia_id and not frecuencia_id.isdigit():
-                raise  ValidationError({"id": "El parametro 'id' debe de ser un numero"})
+                raise  ValidationError({"error": "El parametro 'id' debe de ser un numero"})
 
             #Filtrar por parametros
             if frecuencia_id:
@@ -45,6 +45,6 @@ class FrecuenciaApiView(APIView):
             return Response(status=status.HTTP_200_OK, data=serializer.data)
 
         except DatabaseError as e:
-            logger.error(f"Error al recuperar las frecuencias: {e}")
+            logger.error(f"Error al recuperar las frecuencias: {e}, usuario: {request.user}")
             return Response ({"error": "Hubo un problema al recuperar los datos."},
                              status=status.HTTP_500_INTERNAL_SERVER_ERROR)

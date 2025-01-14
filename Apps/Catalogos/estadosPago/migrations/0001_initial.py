@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             name='EstadoPagoModel',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('nombre', models.CharField(max_length=12, null=True, unique=True, validators=[Apps.Catalogos.estadosPago.models.validar_nombre])),
+                ('nombre', models.CharField(max_length=12, null=True, unique=True)),
             ],
             options={
                 'verbose_name': 'EstadoPago',

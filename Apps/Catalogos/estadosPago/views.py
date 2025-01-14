@@ -24,7 +24,7 @@ class EstadoPagoApiView(APIView):
     )
     def get(self, request):
         try:
-            estados = EstadoPagoModel.objects.all()
+            estadopagos = EstadoPagoModel.objects.all()
 
             #Verificar que haigan parametros para filtrar
             estado_id = request.query_params.get('id', None)
@@ -32,19 +32,19 @@ class EstadoPagoApiView(APIView):
 
             #Validar
             if estado_id and not estado_id.isdigit():
-                raise  ValidationError({"id": "El parametro 'id' debe de ser un numero"})
+                raise  ValidationError({"error": "El parametro 'id' debe de ser un numero"})
 
             #Filtrar por parametros
             if estado_id:
-                estados = estados.filter(id=estado_id)
+                estadopagos = estadopagos.filter(id=estado_id)
             if nombre:
-                estados = estados.filter(nombre__icontains=nombre)
+                estadopagos = estadopagos.filter(nombre__icontains=nombre)
 
-            serializer = EstadoPagoSerializer(estados, many=True)
-            logger.info(f"El usuario '{request.user}' recuperó {estados.count()} estados.")
+            serializer = EstadoPagoSerializer(estadopagos, many=True)
+            logger.info(f"El usuario '{request.user}' recuperó {estadopagos.count()} estados de pago.")
             return Response(status=status.HTTP_200_OK, data=serializer.data)
 
         except DatabaseError as e:
-            logger.error(f"Error al recuperar los estadosPago: {e}")
+            logger.error(f"Error al recuperar los estados de pago: {e}, usuario: {request.user}")
             return Response ({"error": "Hubo un problema al recuperar los datos."},
                              status=status.HTTP_500_INTERNAL_SERVER_ERROR)

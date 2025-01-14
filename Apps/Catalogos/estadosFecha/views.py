@@ -26,25 +26,25 @@ class EstadoFechaApiView(APIView):
         try:
             estados = EstadoFechaModel.objects.all()
 
-            #Verificar que haigan parametros para filtrar
+            # Verificar que haigan parametros para filtrar
             estado_id = request.query_params.get('id', None)
             nombre = request.query_params.get('nombre', None)
 
-            #Validar
+            # Validar
             if estado_id and not estado_id.isdigit():
-                raise  ValidationError({"id": "El parametro 'id' debe de ser un numero"})
+                raise ValidationError({"error": "El parametro 'id' debe de ser un numero"})
 
-            #Filtrar por parametros
+            # Filtrar por parametros
             if estado_id:
                 estados = estados.filter(id=estado_id)
             if nombre:
                 estados = estados.filter(nombre__icontains=nombre)
 
             serializer = EstadoFechaSerializer(estados, many=True)
-            logger.info(f"El usuario '{request.user}' recuperó {estados.count()} estados.")
+            logger.info(f"El usuario '{request.user}' recuperó {estados.count()} estados de fecha.")
             return Response(status=status.HTTP_200_OK, data=serializer.data)
 
         except DatabaseError as e:
-            logger.error(f"Error al recuperar los estadosFecha: {e}")
-            return Response ({"error": "Hubo un problema al recuperar los datos."},
-                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            logger.error(f"Error al recuperar los estados de fecha: {e}, usuario: {request.user}")
+            return Response({"error": "Hubo un problema al recuperar los datos."},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)

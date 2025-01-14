@@ -32,7 +32,7 @@ class ExploracionApiView(APIView):
 
             #Validar
             if exploracion_id and not exploracion_id.isdigit():
-                raise  ValidationError({"id": "El parametro 'id' debe de ser un numero"})
+                raise  ValidationError({"error": "El parametro 'id' debe de ser un numero"})
 
             #Filtrar por parametros
             if exploracion_id:
@@ -41,10 +41,10 @@ class ExploracionApiView(APIView):
                 exploraciones = exploraciones.filter(nombre__icontains=nombre)
 
             serializer = ExploracionSerializer(exploraciones, many=True)
-            logger.info(f"El usuario '{request.user}' recuperó {exploraciones.count()} exploraciones.")
+            logger.info(f"El usuario '{request.user}' recuperó {exploraciones.count()} exploraciónes.")
             return Response(status=status.HTTP_200_OK, data=serializer.data)
 
         except DatabaseError as e:
-            logger.error(f"Error al recuperar las exploraciones: {e}")
+            logger.error(f"Error al recuperar las exploraciónes: {e}, usuario: {request.user}")
             return Response ({"error": "Hubo un problema al recuperar los datos."},
                              status=status.HTTP_500_INTERNAL_SERVER_ERROR)
