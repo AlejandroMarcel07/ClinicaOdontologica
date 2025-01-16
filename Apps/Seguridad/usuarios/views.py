@@ -6,20 +6,19 @@ from .models import User
 from drf_yasg.utils import swagger_auto_schema
 
 class UserCreateView(APIView):
-    @swagger_auto_schema(request_body=UserCreateSerializer)
-    def post(self, request):
-        serializer = UserCreateSerializer(data=request.data)
 
-        # Validar los datos
+    @swagger_auto_schema(request_body=UserCreateSerializer)
+    def post(self, request, *args, **kwargs):
+        serializer = UserCreateSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()  # Crear el usuario
             return Response({"message": "Usuario creado exitosamente"}, status=status.HTTP_201_CREATED)
-
-        # En caso de error, retornar las validaciones
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @swagger_auto_schema(
+        responses={200: UserCreateSerializer(many=True)}
+    )
     def get(self, request):
-
         users = User.objects.all()
         serializer = UserCreateSerializer(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
