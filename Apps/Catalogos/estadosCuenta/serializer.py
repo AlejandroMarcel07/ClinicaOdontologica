@@ -7,7 +7,7 @@ def validate_name(value):
     return value
 
 def validate_uniquename(value):
-    if EstadoCuentaSerializer.objects.filter(nombre__iexact=value).exists():
+    if EstadoCuentaModel.objects.filter(nombre__iexact=value).exists():
         raise serializers.ValidationError("¡Este estado de cuenta ya existe!.")
     return value
 
